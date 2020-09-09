@@ -1,0 +1,22 @@
+@media (max-width: 575.98px) {
+  .responsive-btn .btn {
+    margin-bottom: 0.5rem;
+    display: block;
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .responsive-btn .btn {
+    margin-bottom: 0.5rem;
+    display: block;
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .responsive-btn .btn {
+    margin: 0 0.25rem 0.5rem 0;
+    display: block;
+  }
+}

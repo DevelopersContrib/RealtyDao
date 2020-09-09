@@ -1,0 +1,166 @@
+.svg-icon.svg-icon-2x svg {
+  height: 2rem;
+  width: 2rem;
+}
+.svg-icon.svg-icon-3x svg {
+  height: 3rem;
+  width: 3rem;
+}
+.svg-icon.svg-icon-4x svg {
+  height: 4rem;
+  width: 4rem;
+}
+.svg-icon.svg-icon-5x svg {
+  height: 5rem;
+  width: 5rem;
+}
+.svg-icon.svg-icon-6x svg {
+  height: 6rem;
+  width: 6rem;
+}
+.svg-icon.svg-icon-7x svg {
+  height: 7rem;
+  width: 7rem;
+}
+.svg-icon.svg-icon-8x svg {
+  height: 8rem;
+  width: 8rem;
+}
+.svg-icon.svg-icon-9x svg {
+  height: 9rem;
+  width: 9rem;
+}
+.svg-icon.svg-icon-10x svg {
+  height: 10rem;
+  width: 10rem;
+}
+/* SVG Color -------------------- */
+.svg-icon.svg-icon-default svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #b5b5c3;
+}
+.svg-icon.svg-icon-white svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #fff;
+}
+.svg-icon.svg-icon-primary svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #3699ff;
+}
+.svg-icon.svg-icon-primary svg:hover g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+}
+.svg-icon.svg-icon-success svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #1bc5bd;
+}
+.svg-icon.svg-icon-success svg:hover g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+}
+.svg-icon.svg-icon-warning svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #ffa800;
+}
+.svg-icon.svg-icon-warning svg:hover g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+}
+.svg-icon.svg-icon-success svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #1bc5bd;
+}
+.svg-icon.svg-icon-success svg:hover g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+}
+.svg-icon.svg-icon-danger svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #f64e60;
+}
+.svg-icon.svg-icon-danger svg:hover g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+}
+.svg-icon.svg-icon-info svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #8950fc;
+}
+.svg-icon.svg-icon-info svg:hover g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+}
+.svg-icon.svg-icon-dark svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #181c32;
+}
+.svg-icon.svg-icon-dark svg:hover g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+}
+.svg-icon.svg-icon-dark-gray svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: $stormGray;
+}
+.svg-icon.svg-icon-navy-blue svg g [fill] {
+  -webkit-transition: fill 0.3s ease;
+  transition: fill 0.3s ease;
+  fill: #0f1652;
+}
+
+/* Custom Paper Style ---------------------------- */
+.svg-icon.svg-icon-paper {
+  padding: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: block;
+  border-radius: 0.25rem;
+  & svg g [fill] {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    fill: #266bb2;
+  }
+  & .svg-icon-navy-blue svg g [fill] {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    fill: #0f1652;
+  }
+  & .svg-icon-blue svg g [fill] {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    fill: #1d7899;
+  }
+}
+
+/* Clear Float ---------------------------- */
+.list-unstyled.clearfix {
+  &:after {
+    content: "";
+    clear: both;
+  }
+  li {
+    clear: both;
+    margin-bottom: 0.5rem;
+    &:after {
+      content: "";
+      clear: both;
+    }
+  }
+}
+
+.img-activity-hns {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  opacity: 0.8;
+}
