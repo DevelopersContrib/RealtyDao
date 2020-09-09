@@ -77,7 +77,7 @@ export default class Contact extends React.Component {
             <div className="row">
               <div className="col-md-7">
                 <div className="contactImage text-center">
-          				<a href="#" target="_blank">
+          				<a href="https://t.me/realtydao" target="_blank">
           					<img src="https://cdn.vnoc.com/realtydao/join-our-telegram.png" className="img-fluid" />
           				</a>
                 </div>
