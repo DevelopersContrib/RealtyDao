@@ -46,6 +46,8 @@ export default class extends React.Component {
 	  }
 	  
 	  handleSignUp(event) {
+		var axios = require('axios');  
+		var querystring = require('querystring');
 	  	var emailfilter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	    event.preventDefault()
 
@@ -83,41 +85,38 @@ export default class extends React.Component {
 	    }
 	    
        this.state.sbutton = 'spinner-border';
-
-	    fetch('/auth/signup', {
-	      method: 'POST',
-	      body: JSON.stringify(data),
-	      headers:{
-	        'Content-Type': 'application/json'
-	      }
-	    })
-	    .then(res => res.json())
-	    .then(response => {
-	      if (response.message) {
-	        this.setState({
-	          message: response.message,
-	          sbutton : 'd-none'
-	        })
-	      } else if (response.email) {
-	    	  this.setState({
-		          smessage: 'Thank you for signing up. A verification link has been sent to '+response.email+' please check your email',
-		          sbutton : 'd-none',
-		          mform:  'd-none'
-		        })
-	      } else {
-	        this.setState({
-	          message: 'Unknown Error!',
-	          sbutton : 'd-none'
-	        })
-	      }
-	    })
-	    .catch(error => {
-	      console.error('Error:', error)
-	      this.setState({
-	        message: 'Request Failed!',
-	        sbutton : 'd-none'
-	      })
-	    })
+	   
+	    var self = this;
+	    axios.post('/api/users/signup', querystring.stringify(data))
+        .then(function (response) {
+        	if (response.data.message) {
+	  	        self.setState({
+	  	          message: response.data.message,
+	  	          sbutton : 'd-none'
+	  	        })
+	  	      } else if (response.data.email) {
+	  	    	self.setState({
+	  		          smessage: 'Thank you for signing up. A verification link has been sent to '+response.data.email+' please check your email',
+	  		          sbutton : 'd-none',
+	  		          mform:  'd-none'
+	  		        })
+	  	      } else {
+	  	    	self.setState({
+	  	          message: 'Unknown Error!',
+	  	          sbutton : 'd-none'
+	  	        })
+	  	      }
+        })
+        .catch(function (error) {
+        	  console.error('Error:', error)
+		      self.setState({
+		        message: 'Request Failed!',
+		        sbutton : 'd-none'
+		      })
+        });
+	    
+	  
+	  
 	  }
   
   render() {
