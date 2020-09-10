@@ -25,6 +25,9 @@ export default function dashboard() {
       <div className='section-main dashboard card-widget'>
         <div className='container'>
           <div className='row'>
+            <div className="col-lg-12">
+              test
+            </div>
             <div className='col-lg-9'>
               <div className='row'>
                 <div className='col-lg-4'>
