@@ -27,6 +27,7 @@ export default function navhome() {
               <Nav.Link href='/'>Home</Nav.Link>
               <Nav.Link href='explorer'>TLD Explorer</Nav.Link>
               <Nav.Link href='/'>How it Works</Nav.Link>
+		  <Nav.Link href='#contact'>Contact Us</Nav.Link>
               <Nav.Link href='login'>Log In</Nav.Link>
               <Nav.Link href='signup'>Sign Up</Nav.Link>
             </Nav>

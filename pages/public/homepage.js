@@ -212,7 +212,7 @@ export default function homepage() {
           </div>
         </div>
       </div>
-	<div className="contactFeature">
+	<div className="contactFeature" id="contact">
 		<div className="container">
 			<div className="row row-contact">
 				<Contact />

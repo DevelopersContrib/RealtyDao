@@ -58,7 +58,7 @@ export default function footerhome() {
                 <ul>
                   <li><a href="/"><i className="fas fa-chevron-right"></i>Home</a></li>
                   <li><a href="about"><i className="fas fa-chevron-right"></i>About Us</a></li>
-                  <li><a href="https://www.contrib.com/home/contact" target="_blank"><i className="fas fa-chevron-right"></i>Contact Us</a></li>
+                  <li><a href="#contact"><i className="fas fa-chevron-right"></i>Contact Us</a></li>
                   <li><a href="https://www.domaindirectory.com/policypage/terms?domain=realtydao.com" target="_blank"><i className="fas fa-chevron-right"></i>Terms of Service</a></li>
                   <li><a href="https://www.domaindirectory.com/policypage/privacypolicy?domain=realtydao.com" target="_blank"><i className="fas fa-chevron-right"></i>Privacy Policy</a></li>
                 </ul>
