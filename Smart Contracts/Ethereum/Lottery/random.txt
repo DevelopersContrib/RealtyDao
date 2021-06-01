@@ -1,0 +1,15 @@
+https://ethereum.stackexchange.com/questions/76422/solidity-generate-multiple-unpredictable-random-numbers-that-do-not-depend-on
+
+https://ethereum.stackexchange.com/questions/74775/shuffle-array-of-integers-in-solidity
+
+
+50
+30
+20
+
+
+300
+
+150
+90
+60
