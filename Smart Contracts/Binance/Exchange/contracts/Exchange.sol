@@ -15,9 +15,11 @@ contract Exchange {
 		uint256 soldToken;
 		
 		ERC20 eshToken;
-		uint256 reitAmount;
+		uint256 rdaoAmount;
 		uint256 rate;
 		uint256 base; // 1000000
+		
+		uint256 ownerRdaoAmount;
     }
 	
     mapping(uint256 => Swap) public exchange;
@@ -32,7 +34,7 @@ contract Exchange {
         _;
     }
         
-    function create(uint256 _id, uint256 _initPrice, uint256 _bnbUsdPrice, address _eshToken, uint256 _base) public isOwner {
+    function create(uint256 _id, uint256 _initPrice, uint256 _bnbUsdPrice, address _eshToken, uint256 _base, uint256 _owner_rdao_amount) public isOwner {
 		require(_id>0);		
 		Swap storage _ex = exchange[_id];
 		
@@ -40,14 +42,17 @@ contract Exchange {
 			uint256 _price = (0 / _base) + _initPrice;		
 			uint256 _rate = ((1  * 10**18 )*10**18) / (_bnbUsdPrice * _price);			
 			
-			exchange[_id] = Swap(_initPrice, _bnbUsdPrice, _price, 0, ERC20(_eshToken), 0, _rate, _base);
+			exchange[_id] = Swap(_initPrice, _bnbUsdPrice, _price, 0, ERC20(_eshToken), 0, _rate, _base, _ex.ownerRdaoAmount);
 		}else{
+			
+			require(rDAO.transferFrom(msg.sender, address(this), _owner_rdao_amount));
+			
 			domainid.push(_id);
 			
 			uint256 _price = (0 / _base) + _initPrice;		
 			uint256 _rate = ((1  * 10**18 )*10**18) / (_bnbUsdPrice * _price);			
 			
-			exchange[_id] = Swap(_initPrice, _bnbUsdPrice, _price, 0, ERC20(_eshToken), 0, _rate, _base);
+			exchange[_id] = Swap(_initPrice, _bnbUsdPrice, _price, 0, ERC20(_eshToken), 0, _rate, _base, _owner_rdao_amount);
 		}
     }
     
@@ -56,7 +61,7 @@ contract Exchange {
 		require(_id>0 && _ex.rate>0);
 		
         require(rDAO.transferFrom(msg.sender, address(this), _amount));
-		_ex.reitAmount = _ex.reitAmount.add(_amount);
+		_ex.rdaoAmount = _ex.rdaoAmount.add(_amount);
 		
 		uint256 _lastAmount = _amount;
 		
@@ -78,8 +83,15 @@ contract Exchange {
 		return _lastEx;
 	}
 	
-	function transferFund(uint256 amount, address token) public isOwner {
-		ERC20(token).transfer(owner, amount);
+	function transferFund(uint256 amount, address token, address to) public isOwner {
+		ERC20(token).transfer(to, amount);
+	}
+	
+	function sendRDAOtoOwner(uint256 _id, address toOwner) public isOwner {
+		Swap storage _ex = exchange[_id];
+		require(_ex.ownerRdaoAmount>0);
+		require(rDAO.transfer(toOwner, _ex.ownerRdaoAmount));
+		_ex.ownerRdaoAmount = 0;
 	}
 	
 	function setEshToken(uint256 _id, address _eshToken) public isOwner {
@@ -103,9 +115,14 @@ contract Exchange {
 		return _ex.eshToken;	
 	}
 	
-	function getREIT(uint256 _id) public view returns(uint256) {
+	function getRDAO(uint256 _id) public view returns(uint256) {
         Swap storage _ex = exchange[_id];
-        return _ex.reitAmount;
+        return _ex.rdaoAmount;
+    }
+	
+	function getOwnerRDAOAmount(uint256 _id) public view returns(uint256) {
+        Swap storage _ex = exchange[_id];
+        return _ex.ownerRdaoAmount;
     }
 	
 	function getBnbUsdPrice(uint256 _id) public view returns (uint256) {
