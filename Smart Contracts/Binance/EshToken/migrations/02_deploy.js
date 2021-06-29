@@ -1,7 +1,14 @@
-
 const EshToken = artifacts.require('EshToken');
 
 module.exports = async function(deployer, network, accounts) {
-	const esh = await deployer.deploy(EshToken,"ESH TOKEN","ESH","0xd6D6148bc1BE577a6d4411Cd70f2D982e6cD96ca",1000000);
+	const DAN_ADDRESS = "";
+	const DAN_SUPPLY = 100000;
+	const OWNER_ADDRESS = "";
+	const OWNER_SUPPLY = 800000;
+	
+	const RESERVE_ADDRESS = "";
+	const RESERVE_SUPPLY = 100000;
+	
+	const esh = await deployer.deploy(EshToken, "ESH TOKEN", "ESH", DAN_ADDRESS, DAN_SUPPLY, OWNER_ADDRESS, OWNER_SUPPLY, RESERVE_ADDRESS, RESERVE_SUPPLY);
 	
 };

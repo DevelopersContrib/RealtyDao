@@ -8,7 +8,10 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 
 contract EshToken is ERC20, ERC20Detailed, ERC20Mintable, ERC20Pausable, ERC20Burnable{
     uint8 public constant DECIMALS = 18;
-    constructor (string memory name, string memory symbol, address mintTo, uint256 INITIAL_SUPPLY) public ERC20Detailed(name, symbol, DECIMALS) {
-        _mint(mintTo, INITIAL_SUPPLY * (10 ** uint256(DECIMALS)));
+    constructor (string memory name, string memory symbol, 
+		address mintToDan, uint256 DAN_SUPPLY, address mintToOwner, uint256 OWNER_SUPPLY, address mintToReserve, uint256 RESERVE_SUPPLY) public ERC20Detailed(name, symbol, DECIMALS) {
+        _mint(mintToDan, DAN_SUPPLY * (10 ** uint256(DECIMALS)));
+		_mint(mintToOwner, OWNER_SUPPLY * (10 ** uint256(DECIMALS)));
+		_mint(mintToReserve, RESERVE_SUPPLY * (10 ** uint256(DECIMALS)));
     }
 }
