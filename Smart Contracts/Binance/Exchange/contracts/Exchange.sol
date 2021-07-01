@@ -30,6 +30,7 @@ contract Exchange is Ownable{
 		uint256 totalWithdrawRdao;
     }
 	
+	
     mapping(uint256 => Swap) public exchange;
 	
     constructor(address _rdao) public {
