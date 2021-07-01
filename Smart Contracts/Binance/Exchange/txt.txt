@@ -1,0 +1,79 @@
+buy formula
+rdao x rate =  total esh
+1 x 6000 = 6000
+
+
+withdraw formula
+esh / rate = total esh
+6000 / 6000 = 1
+
+1. rdao = await rDAO.deployed()
+2. ex = await Exchange.deployed()
+3. esh = await EshToken.deployed()
+
+
+4. esh.transfer(ex.address, '200000000000000000000000')
+5. await rdao.increaseAllowance(ex.address, '20000000000000000000' )
+
+(await ex.computeRate('59999999999999998','2500000000000000')).toString()
+
+6. await ex.create(197,'59999999999999998','2500000000000000',esh.address, 1000000,'20000000000000000000')
+
+7. await rdao.increaseAllowance(ex.address, '1000000000000000000')
+8. await ex.enter(197,'1000000000000000000','0x54c207dd155f8493c0cEDa867b37F0Af73a54540')
+
+(await ex.price(197)).toString()
+(await ex.getRate(197)).toString()
+
+
+(await ex.soldToken(197)).toString()
+
+web3.utils.fromWei('666000000000000000000','ether')
+web3.utils.fromWei('6000000000000000000000','ether')
+
+(await ex.getTotalWithdrawEsh(197)).toString()
+(await ex.getTotalRdaoEnter(197)).toString()
+
+(await ex.computeWithdraw(197,'6000000000000000000000')).toString()
+
+9. await esh.increaseAllowance(ex.address, '6000000000000000000000')
+10. await ex.withdraw(197,'6000000000000000000000')
+
+(await ex.price(197)).toString()
+(await ex.getRate(197)).toString()
+
+web3.utils.toWei('666','ether')
+666000000000000000000
+
+(await ex.computeWithdraw(197,'666000000000000000000')).toString()
+'101016229334142272'
+web3.utils.fromWei('101016229334142272','ether')
+'0.101016229334142272' //<--- expected rdao returns after sending 666 esh
+
+(await rdao.balanceOf(ex.address)).toString()
+
+//allowance 666esh
+11. await esh.increaseAllowance(ex.address, '666000000000000000000') 
+12. await ex.withdraw(197,'666000000000000000000')
+
+(await ex.price(197)).toString()
+(await ex.getRate(197)).toString()
+
+
+exbal = await esh.balanceOf(ex.address)
+web3.utils.fromWei(exbal,'ether')
+
+
+(await ex.soldToken(197)).toString()
+web3.utils.fromWei('6666000000000000000000','ether')
+
+(await ex.getTotalWithdrawEsh(197)).toString()
+web3.utils.fromWei('6666000000000000000000','ether')
+
+send 100 rdao to exchange
+rdao.transfer(ex.address, '100000000000000000000')
+await ex.withdraw(197,'666000000000000000000')
+
+
+
+
