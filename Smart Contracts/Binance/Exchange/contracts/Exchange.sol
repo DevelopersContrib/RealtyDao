@@ -16,7 +16,7 @@ contract Exchange is Ownable{
 	
     struct Swap {
 		uint256 initPrice;
-		uint256 bnbUsdPrice;
+		uint256 rdaoTotalPerUSD;
 		uint256 price;
 		uint256 soldToken;
 		
@@ -30,7 +30,6 @@ contract Exchange is Ownable{
 		uint256 totalWithdrawRdao;
     }
 	
-	
     mapping(uint256 => Swap) public exchange;
 	
     constructor(address _rdao) public {
@@ -40,45 +39,48 @@ contract Exchange is Ownable{
 		list.push(msg.sender);
     }
     
-    function create(uint256 _id, uint256 _initPrice, uint256 _bnbUsdPrice, address _eshToken, uint256 _base, uint256 _owner_rdao_amount) public {
+    function create(uint256 _id, uint256 _initPrice, uint256 _rdaoTotalPerUSD, address _eshToken, uint256 _base, uint256 _owner_rdao_amount) public {
 		require(_creator.has(msg.sender), "DOES_NOT_HAVE_CREATOR_ROLE");
 		require(_id>0, "INVALID_ID");
 		Swap storage _ex = exchange[_id];
 		
+		uint256 _price = (0 / _base) + _initPrice;		
+		uint256 _rate = calRate(_rdaoTotalPerUSD, _price);
+			
 		if(_ex.rate>0){
-			uint256 _price = (0 / _base) + _initPrice;		
-			uint256 _rate = ((1  * 10**18 )*10**18) / (_bnbUsdPrice * _price);			
+			exchange[_id] = Swap(_initPrice, _rdaoTotalPerUSD, _price, 0, ERC20(_eshToken), 0, _rate, _base, _ex.ownerRdaoAmount, 0, 0);
+		}else{			
+			require(rDAO.transferFrom(msg.sender, address(this), _owner_rdao_amount), "ERROR_TRANSFER_RDAO");			
+			domainid.push(_id);		
 			
-			exchange[_id] = Swap(_initPrice, _bnbUsdPrice, _price, 0, ERC20(_eshToken), 0, _rate, _base, _ex.ownerRdaoAmount, 0, 0);
-		}else{
-			
-			require(rDAO.transferFrom(msg.sender, address(this), _owner_rdao_amount), "ERROR_TRANSFER_RDAO");
-			
-			domainid.push(_id);
-			
-			uint256 _price = (0 / _base) + _initPrice;		
-			uint256 _rate = ((1  * 10**18 )*10**18) / (_bnbUsdPrice * _price);			
-			
-			exchange[_id] = Swap(_initPrice, _bnbUsdPrice, _price, 0, ERC20(_eshToken), 0, _rate, _base, _owner_rdao_amount, 0, 0);
+			exchange[_id] = Swap(_initPrice, _rdaoTotalPerUSD, _price, 0, ERC20(_eshToken), 0, _rate, _base, _owner_rdao_amount, 0, 0);
 		}
     }
     
-	function computeRate(uint256 bnbUsdPrice, uint256 price) public pure returns (uint256) {
-		
-		uint256 totalRate =  ((1  * 10**18 )*10**18) / (bnbUsdPrice * price);
+	function computeRate(uint256 rdaoTotalPerUSD, uint256 price) public view returns (uint256) {		
+		uint256 totalRate = calRate(rdaoTotalPerUSD, price);
 		return totalRate;
 	}
 	
-	function getRate(uint256 _id) public view returns(uint256) {
-        Swap storage _ex = exchange[_id];
-        return _ex.rate;
-    }
-	
+	function calRate(uint256 rdaoTotalPerUSD, uint256 price) internal view returns (uint256) {
+		uint256 totalRate =  (((1  * 10**18 )*10**18) *10**18) / (rdaoTotalPerUSD * price);
+		return totalRate;
+	}
+		
 	function compute(uint256 _id, uint256 _amount) public view returns (uint256) {
 		Swap storage _ex = exchange[_id];
 		uint256 _lastAmount = _amount;
 		
-		uint256 _lastEx = _lastAmount.mul(_ex.rate);
+		uint256 _lastEx = _lastAmount.mul(_ex.rate)/(1  * 10**18 );
+		return _lastEx;
+	}
+	
+	function computeAll(uint256 rdaoTotalPerUSD, uint256 price, uint256 _amount) public view returns (uint256) {
+		uint256 _lastAmount = _amount;
+		
+		uint256 totalRate =  calRate(rdaoTotalPerUSD, price);
+		
+		uint256 _lastEx = _lastAmount.mul(totalRate)/(1  * 10**18 );
 		return _lastEx;
 	}
 	
@@ -92,7 +94,7 @@ contract Exchange is Ownable{
 		
 		uint256 _lastAmount = _amount;
 		
-		uint256 _lastEx = _lastAmount.mul(_ex.rate);
+		uint256 _lastEx = _lastAmount.mul(_ex.rate)/(1  * 10**18 );
 		
 		_ex.eshToken.transfer(_recipient, _lastEx);
 		
@@ -101,7 +103,7 @@ contract Exchange is Ownable{
 		uint256 bal = _ex.soldToken - _ex.totalWithdrawEsh;
 		
 		_ex.price = (bal / _ex.base) + _ex.initPrice;
-		_ex.rate = ((1  * 10**18 )*10**18) / (_ex.bnbUsdPrice * _ex.price);
+		_ex.rate = calRate(_ex.rdaoTotalPerUSD, _ex.price);
     }
 	
 	
@@ -123,7 +125,7 @@ contract Exchange is Ownable{
 		uint256 bal = _ex.soldToken.sub(_ex.totalWithdrawEsh);
 		
 		_ex.price = (bal / _ex.base) + _ex.initPrice;
-		_ex.rate = ((1  * 10**18 )*10**18) / (_ex.bnbUsdPrice * _ex.price);	
+		_ex.rate = calRate(_ex.rdaoTotalPerUSD, _ex.price);	
 	}
 	
 		
@@ -134,7 +136,12 @@ contract Exchange is Ownable{
 		uint256 total = _amount.div(_ex.rate);
 		return total;
 	}
-		
+	
+	function getRate(uint256 _id) public view returns(uint256) {
+        Swap storage _ex = exchange[_id];
+        return _ex.rate;
+    }
+	
 	function getList()public view returns( address  [] memory){
 		return list;
 	}
@@ -179,6 +186,11 @@ contract Exchange is Ownable{
 		return _ex.totalWithdrawEsh;
 	}
 	
+	function getTotalWithdrawRdao(uint256 _id) public view returns (uint256) {
+		Swap storage _ex = exchange[_id];
+		return _ex.totalWithdrawRdao;
+	}
+	
 	function getTotalRdaoEnter(uint256 _id) public view returns(uint256) {
         Swap storage _ex = exchange[_id];
         return _ex.totalRdaoEnter;
@@ -194,9 +206,9 @@ contract Exchange is Ownable{
 		return _ex.eshToken;	
 	}
 	
-	function getBnbUsdPrice(uint256 _id) public view returns (uint256) {
+	function getRdaoTotalPerUSD(uint256 _id) public view returns (uint256) {
 		Swap storage _ex = exchange[_id];
-		return _ex.bnbUsdPrice;
+		return _ex.rdaoTotalPerUSD;
 	}
 	
 	function getInitPrice(uint256 _id) public view returns (uint256) {
